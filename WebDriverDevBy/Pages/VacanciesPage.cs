@@ -11,72 +11,44 @@ internal class VacanciesPage
     IWebElement _buttonCloseWindow;
 
     ReadOnlyCollection<IWebElement> vacancies;
+    public List<CollectionWrapper> CollectionsVacancies;
 
     const string VACANCIES_COLLECTIONS_XPATH = "//a[@class='collections__item gtm-track-collection-click']";
     const string VACANCIES_PAGE_WINDOWB_XPATH = "//button[@class = 'wishes-popup__button-close wishes-popup__button-close_icon']";//= 'submit'
     
-    ////a[@class = "collections__item gtm-track-collection-click" and text() = "QA"] 
-    ///"//a[@class='collections__item gtm-track-collection-click']/child::text()"
-    ////span[@class="collections__item-sub"] - col for list
-
-    List<CollectionWrapper> collections = new List<CollectionWrapper>();
 
     public VacanciesPage(IWebDriver driver)
     {
         _driver = driver;
+        CollectionsVacancies = new List<CollectionWrapper>();
     }
 
-    public int GetCountVacancies()
+    public List<CollectionWrapper> GetCountVacancies()
     {
         vacancies = _driver.FindElements(By.XPath(VACANCIES_COLLECTIONS_XPATH));
-        //vacanciesName = _driver.FindElements(By.XPath("//a[@class='collections__item gtm-track-collection-click']"));
 
-
-        //for (int i = 0; i < vacanciesName.Count(); i++)
-
-        //vacanciesName.Where(x => x.Text != null).ToList().ForEach(e =>
-
-        vacancies.ToList().ForEach(x => 
+        for (int i = 0; i < vacancies.Count(); i++)
         {
-            String[] splitResult = x.Text.Split("\r\n");
-            collections.Add(new CollectionWrapper(splitResult[0], Int32.Parse(splitResult[1])));
-        });
-        
+            String[] splitResult = vacancies[i].Text.Split("\r\n");
+            CollectionsVacancies.Add(new CollectionWrapper(splitResult[0], Int32.Parse(splitResult[1])));
+        }
 
-        // vacanciesCount = _driver.FindElements(By.XPath(VACANCIES_LIST_COUNT_XPATH));
-        //var vacanciesNum = vacanciesCount.Select(x => x.Text).ToList();
+        return CollectionsVacancies;
+    }
 
-        //var allVacancies = vacancies.Select(x => x.Text).ToList();
+    public List<CollectionWrapper> SortByDescending()
+    {
+        List<CollectionWrapper> sortVacancies = new();
 
-        //for(int i = 0; i < allVacancies.Count(); i++)
-        //{
-        //    collections.Add(new CollectionWrapper(allVacancies[i], Int32.Parse(vacanciesNum[i])));
-        //}
+        sortVacancies =  CollectionsVacancies.OrderByDescending(x => x.Count).ToList();
 
-        //for (int i = 0; i < collections.Count(); i++)
-        //{
-        //   collections[i].name.Split('\r');
-        //}
-
-        return vacancies.Count();
+        return sortVacancies;
     }
 
     public void CloseInfoWindowOnVacanciesPage()
     {
         _buttonCloseWindow = _driver.FindElement(By.XPath(VACANCIES_PAGE_WINDOWB_XPATH));
         _buttonCloseWindow.Click();
-    }
-
-    private class CollectionWrapper
-    {
-        public String name;
-        public int count;
-
-        public CollectionWrapper(String name, int count)
-        {
-            this.name = name;
-            this.count = count;
-        }
     }
 
 }

@@ -8,6 +8,7 @@ internal class Program
 {
     static void Main(string[] args)
     {
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
         //1 open main page
         IndexPage indexPage = new IndexPage();
         indexPage.Initialize();
@@ -16,10 +17,16 @@ internal class Program
         VacanciesPage vacanciesPage = indexPage.SwitchToVacanciesPage();
 
         //3 count  all  vacancies on page
-        int numberVacancies = vacanciesPage.GetCountVacancies();
+        List<CollectionWrapper> collectionWrappers = new List<CollectionWrapper>();
+        collectionWrappers = vacanciesPage.GetCountVacancies();
         //driver.Close();
 
-        Console.WriteLine(numberVacancies);
+        collectionWrappers.ToList().ForEach(x => Console.WriteLine(x));
+
+        Console.WriteLine("\n");
+
+        List<CollectionWrapper> collectionSortByDescending = vacanciesPage.SortByDescending();
+        collectionSortByDescending.ToList().ForEach(x => Console.WriteLine(x));
 
         indexPage.Unitialize();
     }

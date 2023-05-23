@@ -9,7 +9,7 @@ internal class IndexPage
     IWebDriver _driver;
     IWebElement _vacancieesLink;
 
-    public ReadOnlyCollection<VacanciesList> Vacanciees;
+    public ReadOnlyCollection<CollectionWrapper> Vacanciees;
 
     const string VACANCIES_PAGE_XPATH = "//a[@class='navbar__nav-item navbar__nav-item_label']"; 
     
