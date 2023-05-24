@@ -28,6 +28,9 @@ internal class Program
         List<CollectionWrapper> collectionSortByDescending = vacanciesPage.SortByDescending();
         collectionSortByDescending.ToList().ForEach(x => Console.WriteLine(x));
 
+        Console.WriteLine("Index = " + indexPage.numberVacancies + "\n" + "Vacancies = " + vacanciesPage.numberVacancies);
+        Console.WriteLine(indexPage.numberVacancies == vacanciesPage.numberVacancies);
+
         indexPage.Unitialize();
     }
 }

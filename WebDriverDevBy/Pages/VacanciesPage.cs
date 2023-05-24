@@ -1,22 +1,22 @@
 ﻿
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Chrome;
 using System.Collections.ObjectModel;
 
 namespace WebDriverDevBy.Pages;
 
-internal class VacanciesPage
+internal class VacanciesPage 
 {
     IWebDriver _driver;
-    IWebElement _buttonCloseWindow;
-
+    
     ReadOnlyCollection<IWebElement> vacancies;
     public List<CollectionWrapper> CollectionsVacancies;
 
     const string VACANCIES_COLLECTIONS_XPATH = "//a[@class='collections__item gtm-track-collection-click']";
     const string VACANCIES_PAGE_WINDOWB_XPATH = "//button[@class = 'wishes-popup__button-close wishes-popup__button-close_icon']";//= 'submit'
     
-
+    public int numberVacancies { get; set; }
     public VacanciesPage(IWebDriver driver)
     {
         _driver = driver;
@@ -33,6 +33,9 @@ internal class VacanciesPage
             CollectionsVacancies.Add(new CollectionWrapper(splitResult[0], Int32.Parse(splitResult[1])));
         }
 
+
+        GetNumberOfVacancies();
+
         return CollectionsVacancies;
     }
 
@@ -40,17 +43,28 @@ internal class VacanciesPage
     {
         List<CollectionWrapper> sortVacancies = new();
 
-        sortVacancies =  CollectionsVacancies.OrderByDescending(x => x.Count).ToList();
+        sortVacancies =  CollectionsVacancies.OrderByDescending(x => x.CountVacancies).ToList();
 
         return sortVacancies;
     }
 
     public void CloseInfoWindowOnVacanciesPage()
     {
-        _buttonCloseWindow = _driver.FindElement(By.XPath(VACANCIES_PAGE_WINDOWB_XPATH));
-        _buttonCloseWindow.Click();
+        Thread.Sleep(5000);
+        var buttonCloseWindow = _driver.FindElement(By.XPath(VACANCIES_PAGE_WINDOWB_XPATH));
+        buttonCloseWindow.Click();
     }
 
+    public void GetNumberOfVacancies()
+    {
+        numberVacancies = CollectionsVacancies.Select(x => x.CountVacancies).Sum();
+    }
+
+    public void СomparisonNumberForVacancies()
+    {
+        int acountInVacanciesPage = CollectionsVacancies.Select(x => x.CountVacancies).Sum();
+        
+    }
 }
 
 

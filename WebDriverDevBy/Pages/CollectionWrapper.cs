@@ -10,16 +10,16 @@ namespace WebDriverDevBy.Pages
     internal class CollectionWrapper
     {
         public string Name;
-        public int Count;
+        public int CountVacancies;
 
         public CollectionWrapper( string name, int count)
         {
             Name = name;
-            Count = count; 
+            CountVacancies = count; 
         }
         public override string ToString()
         {
-            return String.Format("Name: {0} " + "Count: {1}",Name, Count);
+            return String.Format("Name: {0} " + "Count: {1}",Name, CountVacancies);
         }
 
     }
